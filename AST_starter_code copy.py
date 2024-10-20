@@ -1,4 +1,3 @@
-# Imports - importing "csv" is not necessary!
 from typing import Dict
 
 # Constants
@@ -36,7 +35,7 @@ def main() -> None:
             print(f"Listing Anishinaabemowin phrases containing \"{phrase_to_find}\" and their English translations:")
             translation_dict = find_phrase("", phrase_to_find)
         
-        print_results(translation_dict, lang == ENG)
+        print_results(translation_dict, lang = ENG)
 
 def print_results(translation_dict: Dict[str, str], eng_translation: bool) -> None:
     """
@@ -52,11 +51,11 @@ def print_results(translation_dict: Dict[str, str], eng_translation: bool) -> No
     count = 1
     if eng_translation:
         for key, value in translation_dict.items():
-            print(f"{count}. English: {key} => Anishinaabemowin: {value}")
+            print(f"{count}. Engl!ish: {key} => Anishinaabemowin: {value}")
             count += 1
     else:
         for key, value in translation_dict.items():
-            print(f"{count}. Anishinaabemowin: {value} => English: {key}")
+            print(f"{count}. Anishinaabemowin: {key} => English: {value}")
             count += 1
             
     print("End of results.", end="\n\n")
@@ -84,29 +83,27 @@ def find_phrase(eng_search: str, ani_search: str) -> Dict[str, str]:
     # is case-insensitive.
     eng_search, ani_search = eng_search.lower(), ani_search.lower()
     
-    # TODO: What should replace "None" in the "with" statement?
-    with open(CSV_LOC, None, encoding="utf8") as file: # replace None "r"
-        next_line.readline() # Skip the header
+    with open(CSV_LOC, "r", encoding="utf8") as file:
+        file.readline() # Skip the header
 
-        # TODO: What should we do if we want to read the first line of the csv, after the header?
-        line = None # file.readline()
+        # Read the first line of the csv, after the header
+        line = file.readline()
 
         ## Processing line by line
         while line:
-            # TODO: How do we separate an Anishinaabemowin and English phrase from each other?
-            # Hint: Are there any interesting properties that you can exploit?
-            phrases = None # line.split(",")
+            # Separate an Anishinaabemowin and English phrase from each other
+            phrases = line.strip().split(",")
             
-            # TODO: How should we assign these variables?
-            line_ani, line_eng = None, None # phrases[0], phrases[1]
+            # Assign these variables
+            line_ani, line_eng = phrases[0].strip('"'), phrases[1].strip('"')
                 
             # Finding an English or Anishinaabemowin syllabic phrase
             if (((eng_search != "") and (eng_search in line_eng.lower())) or
                 ((ani_search != "") and (ani_search in line_ani.lower()))):
                 translation_dict[line_eng] = line_ani
                 
-            # TODO: How do we read the next line of the file?
-            line = None # file.readline()
+            # Read the next line of the file
+            line = file.readline()
 
     return translation_dict
 
@@ -143,22 +140,19 @@ def write_results(translation_dict: Dict[str, str], eng_translation: bool, phras
         file_nme = "eng_to_ani_" + phrase_to_find + ".txt"
         string_to_write = f"Listing English phrases containing \"{phrase_to_find}\" and their Anishinaabemowin translations:\n"
         for key, value in translation_dict.items():
-            string_to_write += f"{count}. English: {key} => Anishinaabemowin: {value}\n"
+            string_to_write += f"{count}. Engl!ish: {key} => Anishinaabemowin: {value}\n"
             count += 1
         
     else:
         file_nme = "ani_to_eng_" + phrase_to_find + ".txt"
         string_to_write = f"Listing Anishinaabemowin phrases containing \"{phrase_to_find}\" and their English translations:\n"
         for key, value in translation_dict.items():
-            string_to_write += f"{count}. Anishinaabemowin: {value} => English: {key}\n"
+            string_to_write += f"{count}. Anishinaabemowin: {key} => English: {value}\n"
             count += 1
 
     if string_to_write != "":
-        # TODO: What should replace "None" in the "with" statement?
-        with open(file_nme, None, encoding="utf8") as file:
-            
-            # TODO: What should we do to write all of our results to a new file?
-            pass # file.write(string_to_write)
+        with open(file_nme, "w", encoding="utf8") as file:
+            file.write(string_to_write)
 
 if __name__ == "__main__":
     main() # Run main loop infinitely
