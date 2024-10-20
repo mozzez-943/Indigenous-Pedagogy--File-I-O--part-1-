@@ -35,7 +35,7 @@ def main() -> None:
             print(f"Listing Anishinaabemowin phrases containing \"{phrase_to_find}\" and their English translations:")
             translation_dict = find_phrase("", phrase_to_find)
         
-        print_results(translation_dict, lang = ENG)
+        print_results(translation_dict, lang == ENG)
 
 def print_results(translation_dict: Dict[str, str], eng_translation: bool) -> None:
     """
@@ -51,7 +51,7 @@ def print_results(translation_dict: Dict[str, str], eng_translation: bool) -> No
     count = 1
     if eng_translation:
         for key, value in translation_dict.items():
-            print(f"{count}. Engl!ish: {key} => Anishinaabemowin: {value}")
+            print(f"{count}. English: {key} => Anishinaabemowin: {value}")
             count += 1
     else:
         for key, value in translation_dict.items():
@@ -140,7 +140,7 @@ def write_results(translation_dict: Dict[str, str], eng_translation: bool, phras
         file_nme = "eng_to_ani_" + phrase_to_find + ".txt"
         string_to_write = f"Listing English phrases containing \"{phrase_to_find}\" and their Anishinaabemowin translations:\n"
         for key, value in translation_dict.items():
-            string_to_write += f"{count}. Engl!ish: {key} => Anishinaabemowin: {value}\n"
+            string_to_write += f"{count}. English: {key} => Anishinaabemowin: {value}\n"
             count += 1
         
     else:
