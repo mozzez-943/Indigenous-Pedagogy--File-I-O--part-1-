@@ -56,7 +56,7 @@ def print_results(translation_dict: Dict[str, str], eng_translation: bool) -> No
             count += 1
     else:
         for key, value in translation_dict.items():
-            print(f"{count}. Anishinaabemowin: {value} => English: {key}")
+            print(f"{count}. Anishinaabemowin: {key} => English: {value}")
             count += 1
             
     print("End of results.", end="\n\n")
@@ -65,7 +65,7 @@ def print_results(translation_dict: Dict[str, str], eng_translation: bool) -> No
 
 def find_phrase(eng_search: str, ani_search: str) -> Dict[str, str]:
     """
-    Finds the English phrase <eng_phrase> or the Anishinaabemowin phrase <ani_phrase> in the file
+    Finds the English phrase <eng_search> or the Anishinaabemowin phrase <ani_search> in the file
     <CSV_LOC>.
 
     Args:
@@ -85,8 +85,8 @@ def find_phrase(eng_search: str, ani_search: str) -> Dict[str, str]:
     eng_search, ani_search = eng_search.lower(), ani_search.lower()
     
     # TODO: What should replace "None" in the "with" statement?
-    with open(CSV_LOC, None, encoding="utf8") as file: # replace None "r"
-        next_line.readline() # Skip the header
+    with open(CSV_LOC, None, encoding="utf8") as file: # replace "None" with "r"
+        file.readline() # Skip the header
 
         # TODO: What should we do if we want to read the first line of the csv, after the header?
         line = None # file.readline()
@@ -95,20 +95,21 @@ def find_phrase(eng_search: str, ani_search: str) -> Dict[str, str]:
         while line:
             # TODO: How do we separate an Anishinaabemowin and English phrase from each other?
             # Hint: Are there any interesting properties that you can exploit?
-            phrases = None # line.split(",")
+            phrases = None # line.strip().split(",")
             
             # TODO: How should we assign these variables?
-            line_ani, line_eng = None, None # phrases[0], phrases[1]
+            line_ani, line_eng = None, None # phrases[0].strip('"'), phrases[1].strip('"')
                 
             # Finding an English or Anishinaabemowin syllabic phrase
             if (((eng_search != "") and (eng_search in line_eng.lower())) or
                 ((ani_search != "") and (ani_search in line_ani.lower()))):
-                translation_dict[line_eng] = line_ani
+                translation_dict[line_ani] = line_eng
                 
             # TODO: How do we read the next line of the file?
             line = None # file.readline()
 
     return translation_dict
+
 
 ############################################# TASK 2 #############################################
 
@@ -150,13 +151,12 @@ def write_results(translation_dict: Dict[str, str], eng_translation: bool, phras
         file_nme = "ani_to_eng_" + phrase_to_find + ".txt"
         string_to_write = f"Listing Anishinaabemowin phrases containing \"{phrase_to_find}\" and their English translations:\n"
         for key, value in translation_dict.items():
-            string_to_write += f"{count}. Anishinaabemowin: {value} => English: {key}\n"
+            string_to_write += f"{count}. Anishinaabemowin: {key} => English: {value}\n"
             count += 1
 
     if string_to_write != "":
         # TODO: What should replace "None" in the "with" statement?
-        with open(file_nme, None, encoding="utf8") as file:
-            
+        with open(file_nme, None, encoding="utf8") as file: # replace "None" with "w"
             # TODO: What should we do to write all of our results to a new file?
             pass # file.write(string_to_write)
 
